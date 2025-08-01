@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	mlib "github.com/wsva/monitor_lib_go"
-	ml_detail "github.com/wsva/monitor_lib_go/detail"
 )
 
 type BackupRMAN struct {
@@ -47,16 +46,16 @@ func checkRMANBackup(t TargetOracle, wg *sync.WaitGroup) {
 		return
 	}
 
-	var md ml_detail.MDCommon
+	var md mlib.MDCommon
 	defer func() {
 		jsonString, err := md.JSONString()
 		resultsRuntimeLock.Lock()
 		if err != nil {
 			resultsRuntime = append(resultsRuntime,
-				mlib.GetMR(t.Name, t.Address, mlib.MTypeRMANBackup, "", err.Error()))
+				mlib.NewMR(t.Name, t.Address, "oracle_rman_remote", "", err.Error()))
 		} else {
 			resultsRuntime = append(resultsRuntime,
-				mlib.GetMR(t.Name, t.Address, mlib.MTypeRMANBackup, jsonString, ""))
+				mlib.NewMR(t.Name, t.Address, "oracle_rman_remote", jsonString, ""))
 		}
 		resultsRuntimeLock.Unlock()
 	}()

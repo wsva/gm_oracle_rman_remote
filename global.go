@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -43,7 +42,7 @@ func initGlobals() error {
 	}
 	MainConfigFile = path.Join(filepath.Dir(basepath), MainConfigFile)
 
-	contentBytes, err := ioutil.ReadFile(MainConfigFile)
+	contentBytes, err := os.ReadFile(MainConfigFile)
 	if err != nil {
 		return err
 	}
